@@ -3,11 +3,11 @@ import hashlib
 import pyaes
 from gui.gui import Ui_Form
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog, QInputDialog, QApplication
-from PyQt5 import uic
         
         
 def not_empty_decorator(obj_dict):
     attributes = ["text", "toPlainText"]
+
     def wrapper(method):
         def _wrapper(self, *args, **kwargs):
             for obj_name, field_name in obj_dict.items():
@@ -43,8 +43,8 @@ class MainWindow(QWidget, Ui_Form):
             self.load_file(filepath)
         
     def open_secret(self, checked):
-        filepath = self.file_dialog.getOpenFileName(self, "Open file", "", "Secret text files (*.sk)")
-        
+        filepath, _ = self.file_dialog.getOpenFileName(self, "Open file", "", "Secret text files (*.sk)")
+
         if filepath:
             self.load_file(filepath)
   
@@ -72,8 +72,7 @@ class MainWindow(QWidget, Ui_Form):
         else:
             self.teContent.setPlainText(text)
             QMessageBox.information(self, 'Open secret', "Secret successfully loaded.", QMessageBox.Ok) 
-    
-    
+
     @not_empty_decorator({"teContent": "text"})
     def save_secret(self, checked):
         psw, ok = QInputDialog.getText(self, 'File protection', 'If you want to protect this file, please enter a password. Otherwise leave it blank.')
